@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Ventas</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="toolbar">
+      <div class="toolbar-btn" onclick="abrirModuloVisitas()">V</div>
+      <div class="toolbar-btn nc" onclick="abrirClientesNoContestaron()">
+        NC
+      </div>
+      <div class="toolbar-btn interesado" onclick="abrirInteresados()">I</div>
+      <div class="toolbar-btn no-interesado" onclick="abrirNoInteresados()">
+        NI
+      </div>
+      <div class="toolbar-btn seguimiento" onclick="abrirSeguimientos()">S</div>
+      <div class="toolbar-btn compro" onclick="abrirCompro()">C</div>
+    </div>
+
+    <div class="container">
+      <h1>Sistema de Ventas</h1>
+
+      <button onclick="generarReportePDF()">Generar Reporte en PDF</button>
+
+      <h2>Buscar Cliente por Teléfono</h2>
+      <div>
+        <input
+          type="number"
+          id="searchPhone"
+          placeholder="Ingrese el número de teléfono"
+        />
+        <button onclick="searchClientByPhone()">Buscar</button>
+      </div>
+      <div id="searchResult"></div>
+
+      <h2>Registro de Clientes</h2>
+      <form id="clientForm">
+        <input type="hidden" id="clientId" name="id" />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Nombre y Apellido"
+          required
+        />
+        <input
+          type="number"
+          id="phone"
+          name="phone"
+          placeholder="Celular"
+          required
+        />
+        <select id="origin" name="origin" required>
+          <option value="">Seleccione Origen</option>
+          <option value="Oficina">Oficina</option>
+          <option value="Llamada">Llamada</option>
+          <option value="Publicidad">Publicidad</option>
+          <option value="Prospección">Prospección</option>
+          <option value="Marketplace">Marketplace</option>
+        </select>
+        <select id="project" name="project" required>
+          <option value="">Seleccione Proyecto</option>
+          <option value="Playa">Playa</option>
+          <option value="Cerro Blanco">Cerro Blanco</option>
+          <option value="Cazador">Cazador</option>
+          <option value="Otros">Otros</option>
+        </select>
+        <select id="eventType" name="eventType" required>
+          <option value="">Seleccione Evento</option>
+          <option value="Contacto">Contacto</option>
+          <option value="Visita">Visita</option>
+        </select>
+        <input type="date" id="nextEventDate" name="nextEventDate" required />
+        <input type="time" id="horaVisita" name="horaVisita" required />
+        <textarea
+          id="observation"
+          name="observation"
+          placeholder="Observación"
+        ></textarea>
+        <button type="submit">Registrar Cliente</button>
+      </form>
+
+      <h2>Plantillas de Mensajes</h2>
+      <form id="templateForm">
+        <input
+          type="text"
+          id="templateName"
+          placeholder="Nombre de la plantilla"
+          required
+        />
+        <textarea
+          id="templateMessage"
+          placeholder="Mensaje de la plantilla"
+          required
+        ></textarea>
+        <button type="submit">Guardar Plantilla</button>
+      </form>
+      <div>
+        <label for="selectTemplate">Seleccionar Plantilla:</label>
+        <select id="selectTemplate" onchange="loadTemplate()">
+          <option value="">Seleccione una plantilla</option>
+        </select>
+      </div>
+
+      <h2>Calendario de Eventos</h2>
+      <div class="calendar" id="calendar"></div>
+      <div class="events-list">
+        <table id="eventsTable">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Celular</th>
+              <th>Proyecto</th>
+              <th>Fecha</th>
+              <th>Evento</th>
+              <th>Observación</th>
+              <th>Acciones</th>
+              <th>Alarma</th>
+              <th>Google Calendar</th>
+              <th>No contestó</th>
+              <th>WhatsApp</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <h2>Eventos Cercanos</h2>
+      <div class="upcoming-events">
+        <table id="upcomingEventsTable">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Celular</th>
+              <th>Proyecto</th>
+              <th>Fecha</th>
+              <th>Evento</th>
+              <th>Observación</th>
+              <th>Acciones</th>
+              <th>Alarma</th>
+              <th>Google Calendar</th>
+              <th>No contestó</th>
+              <th>WhatsApp</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <h2>Gráficos</h2>
+      <div class="chart-container">
+        <div class="chart" id="chartOrigin">
+          <div class="y-axis" id="yAxisOrigin"></div>
+        </div>
+        <div class="chart" id="chartProject">
+          <div class="y-axis" id="yAxisProject"></div>
+        </div>
+        <div class="chart" id="chartLeadsPerDay">
+          <div class="y-axis" id="yAxisLeadsPerDay"></div>
+        </div>
+      </div>
+
+      <h2>Exportar Clientes por Mes</h2>
+      <div>
+        <label for="exportMonth">Seleccione el mes:</label>
+        <input type="month" id="exportMonth" required />
+        <button onclick="exportClientsByMonth()">Exportar CSV</button>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
