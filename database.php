@@ -10,7 +10,7 @@ $dbname = "ventas_db";
 // Crear la conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar la conexión
+// Verificar la conexión esto es un comentario de prueba
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
